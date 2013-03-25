@@ -65,7 +65,7 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
 
         $metadataFactory->expects($this->once())
             ->method('getMetadataForClass')
-            ->with($input)
+	    ->with(get_class($input))
             ->will($this->returnValue($metadata));
 
         $jmsMetadataParser = new JmsMetadataParser($metadataFactory, $propertyNamingStrategy, $docCommentExtractor);
