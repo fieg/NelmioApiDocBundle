@@ -11,6 +11,9 @@
 
 namespace Nelmio\ApiDocBundle\Parser;
 
+use JMS\Serializer\Exclusion\GroupsExclusionStrategy;
+use JMS\Serializer\GraphNavigator;
+use JMS\Serializer\NavigatorContext;
 use Metadata\MetadataFactoryInterface;
 use Nelmio\ApiDocBundle\Util\DocCommentExtractor;
 use JMS\Serializer\Metadata\PropertyMetadata;
@@ -21,7 +24,6 @@ use JMS\Serializer\Metadata\VirtualPropertyMetadata;
  */
 class JmsMetadataParser implements ParserInterface
 {
-
     /**
      * @var \Metadata\MetadataFactoryInterface
      */
@@ -46,8 +48,10 @@ class JmsMetadataParser implements ParserInterface
      */
     public function supports($input)
     {
+        list($className, $groups) = $this->parseInputArgument($input);
+
         try {
-            if ($meta = $this->factory->getMetadataForClass($input)) {
+            if ($meta = $this->factory->getMetadataForClass($className)) {
                 return true;
             }
         } catch (\ReflectionException $e) {
@@ -61,7 +65,9 @@ class JmsMetadataParser implements ParserInterface
      */
     public function parse($input)
     {
-        return $this->doParse($input);
+        list($className, $groups) = $this->parseInputArgument($input);
+
+        return $this->doParse($className, array(), $groups);
     }
 
     /**
@@ -72,13 +78,16 @@ class JmsMetadataParser implements ParserInterface
      * @return array                     metadata for given class
      * @throws \InvalidArgumentException
      */
-    protected function doParse($className, $visited = array())
+    protected function doParse($className, $visited = array(), array $groups = array())
     {
         $meta = $this->factory->getMetadataForClass($className);
 
         if (null === $meta) {
             throw new \InvalidArgumentException(sprintf("No metadata found for class %s", $className));
         }
+
+        $context = new NavigatorContext(GraphNavigator::DIRECTION_SERIALIZATION, 'json'); //TODO: the exclusionStrategy has a hard dependency on this, despite it isn't even used :(
+        $exclusionStrategy = new GroupsExclusionStrategy($groups);
 
         $params = array();
 
@@ -88,6 +97,11 @@ class JmsMetadataParser implements ParserInterface
                 $name = isset($item->serializedName) ? $item->serializedName : $item->name;
 
                 $dataType = $this->processDataType($item);
+
+                // apply exclusion strategy
+                if (true === $exclusionStrategy->shouldSkipProperty($item, $context)) {
+                    continue;
+                }
 
                 $params[$name] = array(
                     'dataType' => $dataType['normalized'],
@@ -104,7 +118,7 @@ class JmsMetadataParser implements ParserInterface
                 // check for nested classes with JMS metadata
                 if ($dataType['class'] && null !== $this->factory->getMetadataForClass($dataType['class'])) {
                     $visited[] = $dataType['class'];
-                    $params[$name]['children'] = $this->doParse($dataType['class'], $visited);
+                    $params[$name]['children'] = $this->doParse($dataType['class'], $visited, $groups);
                 }
             }
         }
@@ -194,4 +208,22 @@ class JmsMetadataParser implements ParserInterface
         return !empty($extracted) ? $extracted : "No description.";
     }
 
+    /**
+     * Parses the input argument
+     *
+     * @param string $input
+     * @return array
+     */
+    protected function parseInputArgument($input)
+    {
+        $className = $input;
+        $groups    = array();
+
+        if (false !== strpos($input, '@')) {
+            list($className, $group) = explode('@', $input);
+            $groups = explode(',', $group);
+        }
+
+        return array($className, $groups);
+    }
 }

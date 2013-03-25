@@ -101,7 +101,9 @@ The following properties are available:
 * `filters`: an array of filters;
 
 * `input`: the input type associated to the method, currently this supports Form Types, and classes with JMS Serializer
- metadata, useful for POST|PUT methods, either as FQCN or as form type (if it is registered in the form factory in the container)
+ metadata, useful for POST|PUT methods, either as FQCN or as form type (if it is registered in the form factory in the container).
+ When using a class with JMS Serializer metadata, you can use exclude groups by using this syntax:
+ `input="Acme\YourBundle\Entity\User@update,public"`. In this case the groups 'update' and 'public' are used.
 
 * `output`: the output type associated with the response.  Specified and parsed the same way as `input`.
 
