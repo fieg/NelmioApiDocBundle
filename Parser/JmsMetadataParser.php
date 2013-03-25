@@ -226,6 +226,9 @@ class JmsMetadataParser implements ParserInterface
      */
     protected function parseInputArgument($input)
     {
+	// normalize input
+	$input = is_object($input) ? get_class($input) : $input;
+
 	$className = $input;
 	$groups    = array();
 
