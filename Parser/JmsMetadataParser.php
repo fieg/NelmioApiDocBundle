@@ -46,9 +46,9 @@ class JmsMetadataParser implements ParserInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($input)
+    public function supports(array $input)
     {
-        list($className, $groups) = $this->parseInputArgument($input);
+        $className = $input['class'];
 
         try {
             if ($meta = $this->factory->getMetadataForClass($className)) {
@@ -63,9 +63,10 @@ class JmsMetadataParser implements ParserInterface
     /**
      * {@inheritdoc}
      */
-    public function parse($input)
+    public function parse(array $input)
     {
-        list($className, $groups) = $this->parseInputArgument($input);
+        $className = $input['class'];
+        $groups    = $input['groups'];
 
         return $this->doParse($className, array(), $groups);
     }
@@ -206,27 +207,5 @@ class JmsMetadataParser implements ParserInterface
         }
 
         return !empty($extracted) ? $extracted : "No description.";
-    }
-
-    /**
-     * Parses the input argument
-     *
-     * @param string $input
-     * @return array
-     */
-    protected function parseInputArgument($input)
-    {
-        // normalize input
-        $input = is_object($input) ? get_class($input) : $input;
-
-        $className = $input;
-        $groups    = array();
-
-        if (false !== strpos($input, '@')) {
-            list($className, $group) = explode('@', $input);
-            $groups = explode(',', $group);
-        }
-
-        return array($className, $groups);
     }
 }

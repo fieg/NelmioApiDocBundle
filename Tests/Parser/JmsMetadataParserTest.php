@@ -44,16 +44,21 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
         $metadata->addPropertyMetadata($propertyMetadataBar);
         $metadata->addPropertyMetadata($propertyMetadataBaz);
 
-        $input = new JmsNested();
+        $input = 'Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsNested';
 
         $metadataFactory->expects($this->once())
             ->method('getMetadataForClass')
-            ->with(get_class($input))
+            ->with($input)
             ->will($this->returnValue($metadata));
 
         $jmsMetadataParser = new JmsMetadataParser($metadataFactory, $docCommentExtractor);
 
-        $output = $jmsMetadataParser->parse($input);
+        $output = $jmsMetadataParser->parse(
+            array(
+                'class'  => $input,
+                'groups' => array()
+            )
+        );
 
         $this->assertEquals(array(
             'foo' => array(
