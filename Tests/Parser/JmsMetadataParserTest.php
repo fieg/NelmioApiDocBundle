@@ -58,22 +58,27 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
 
         $propertyNamingStrategy
             ->expects($this->at(2))
-            ->method('translateName')
-            ->will($this->returnValue('baz'));
+	    ->method('translateName')
+	    ->will($this->returnValue('baz'));
 
-        $input = new JmsNested();
+	$input = 'Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsNested';
 
-        $metadataFactory->expects($this->once())
-            ->method('getMetadataForClass')
-	    ->with(get_class($input))
-            ->will($this->returnValue($metadata));
+	$metadataFactory->expects($this->once())
+	    ->method('getMetadataForClass')
+	    ->with($input)
+	    ->will($this->returnValue($metadata));
 
-        $jmsMetadataParser = new JmsMetadataParser($metadataFactory, $propertyNamingStrategy, $docCommentExtractor);
+	$jmsMetadataParser = new JmsMetadataParser($metadataFactory, $propertyNamingStrategy, $docCommentExtractor);
 
-        $output = $jmsMetadataParser->parse($input);
+	$output = $jmsMetadataParser->parse(
+	    array(
+		'class'  => $input,
+		'groups' => array()
+	    )
+	);
 
-        $this->assertEquals(array(
-            'foo' => array(
+	$this->assertEquals(array(
+	    'foo' => array(
                 'dataType' => 'DateTime',
                 'required' => false,
                 'description' => 'No description.',
