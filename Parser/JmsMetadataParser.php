@@ -12,6 +12,7 @@
 namespace Nelmio\ApiDocBundle\Parser;
 
 use JMS\Serializer\Exclusion\GroupsExclusionStrategy;
+use JMS\Serializer\Exclusion\VersionExclusionStrategy;
 use JMS\Serializer\GraphNavigator;
 use JMS\Serializer\NavigatorContext;
 use Metadata\MetadataFactoryInterface;
@@ -77,8 +78,9 @@ class JmsMetadataParser implements ParserInterface
     {
 	$className = $input['class'];
 	$groups    = $input['groups'];
+	$version   = $input['version'];
 
-	return $this->doParse($className, array(), $groups);
+	return $this->doParse($className, array(), $groups, $version);
     }
 
     /**
@@ -89,32 +91,38 @@ class JmsMetadataParser implements ParserInterface
      * @return array                     metadata for given class
      * @throws \InvalidArgumentException
      */
-    protected function doParse($className, $visited = array(), array $groups = array())
+    protected function doParse($className, $visited = array(), array $groups = array(), $version = null)
     {
         $meta = $this->factory->getMetadataForClass($className);
 
         if (null === $meta) {
             throw new \InvalidArgumentException(sprintf("No metadata found for class %s", $className));
-        }
+	}
 
 	$context = new NavigatorContext(GraphNavigator::DIRECTION_SERIALIZATION, 'json'); //TODO: the exclusionStrategy has a hard dependency on this, despite it isn't even used :(
-	$exclusionStrategy = new GroupsExclusionStrategy($groups);
+	$exclusionStrategies = array();
+	$exclusionStrategies[] = new GroupsExclusionStrategy($groups);
+	if (null !== $version) { // Add VersionExclusionStrategy only if version is not null because otherwise it is interpreted as version 0.
+	    $exclusionStrategies[] = new VersionExclusionStrategy($version);
+	}
 
-        $params = array();
+	$params = array();
 
         // iterate over property metadata
         foreach ($meta->propertyMetadata as $item) {
             if (!is_null($item->type)) {
                 $name = $this->namingStrategy->translateName($item);
 
-                $dataType = $this->processDataType($item);
+		$dataType = $this->processDataType($item);
 
-		// apply exclusion strategy
-		if (true === $exclusionStrategy->shouldSkipProperty($item, $context)) {
-		    continue;
+		// apply exclusion strategies
+		foreach ($exclusionStrategies as $strategy) {
+		    if (true === $strategy->shouldSkipProperty($item, $context)) {
+			continue 2;
+		    }
 		}
 
-                $params[$name] = array(
+		$params[$name] = array(
                     'dataType' => $dataType['normalized'],
                     'required'      => false,   //TODO: can't think of a good way to specify this one, JMS doesn't have a setting for this
                     'description'   => $this->getDescription($className, $item),
@@ -126,13 +134,13 @@ class JmsMetadataParser implements ParserInterface
                     continue;
                 }
 
-                // check for nested classes with JMS metadata
-                if ($dataType['class'] && null !== $this->factory->getMetadataForClass($dataType['class'])) {
-                    $visited[] = $dataType['class'];
-		    $params[$name]['children'] = $this->doParse($dataType['class'], $visited, $groups);
-                }
-            }
-        }
+		// check for nested classes with JMS metadata
+		if ($dataType['class'] && null !== $this->factory->getMetadataForClass($dataType['class'])) {
+		    $visited[] = $dataType['class'];
+		    $params[$name]['children'] = $this->doParse($dataType['class'], $visited, $groups, $version);
+		}
+	    }
+	}
 
         return $params;
     }
