@@ -359,6 +359,7 @@ class ApiDocExtractor
 	$defaults = array(
 	    'class' => '',
 	    'groups' => array(),
+	    'version' => null,
 	);
 
 	// normalize strings
@@ -369,6 +370,11 @@ class ApiDocExtractor
 	// normalize groups
 	if (isset($input['groups']) && is_string($input['groups'])) {
 	    $input['groups'] = array_map('trim', explode(',', $input['groups']));
+	}
+
+	// normalize version
+	if (!array_key_exists('version', $input)) {
+	    $input['version'] = null;
 	}
 
 	return $input += $defaults;
