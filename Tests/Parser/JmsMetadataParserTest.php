@@ -5,6 +5,7 @@ use Nelmio\ApiDocBundle\Tests\Fixtures\Model\JmsNested;
 use Nelmio\ApiDocBundle\Parser\JmsMetadataParser;
 use JMS\Serializer\Metadata\ClassMetadata;
 use JMS\Serializer\Metadata\PropertyMetadata;
+use JMS\Serializer\Naming\CamelCaseNamingStrategy;
 
 class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
 {
@@ -130,7 +131,9 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
 	    ->with($input)
 	    ->will($this->returnValue($metadata));
 
-	$jmsMetadataParser = new JmsMetadataParser($metadataFactory, $docCommentExtractor);
+	$propertyNamingStrategy = new CamelCaseNamingStrategy();
+
+	$jmsMetadataParser = new JmsMetadataParser($metadataFactory, $propertyNamingStrategy, $docCommentExtractor);
 
 	// No group specified.
 	$output = $jmsMetadataParser->parse(
@@ -261,7 +264,9 @@ class JmsMetadataParserTest extends \PHPUnit_Framework_TestCase
 	    ->with($input)
 	    ->will($this->returnValue($metadata));
 
-	$jmsMetadataParser = new JmsMetadataParser($metadataFactory, $docCommentExtractor);
+	$propertyNamingStrategy = new CamelCaseNamingStrategy();
+
+	$jmsMetadataParser = new JmsMetadataParser($metadataFactory, $propertyNamingStrategy, $docCommentExtractor);
 
 	// No version specified.
 	$output = $jmsMetadataParser->parse(
