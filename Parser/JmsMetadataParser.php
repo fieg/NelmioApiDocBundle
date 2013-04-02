@@ -15,6 +15,7 @@ use JMS\Serializer\Exclusion\GroupsExclusionStrategy;
 use JMS\Serializer\Exclusion\VersionExclusionStrategy;
 use JMS\Serializer\GraphNavigator;
 use JMS\Serializer\NavigatorContext;
+use JMS\Serializer\SerializationContext;
 use Metadata\MetadataFactoryInterface;
 use Nelmio\ApiDocBundle\Util\DocCommentExtractor;
 use JMS\Serializer\Metadata\PropertyMetadata;
@@ -96,10 +97,9 @@ class JmsMetadataParser implements ParserInterface
         $meta = $this->factory->getMetadataForClass($className);
 
         if (null === $meta) {
-            throw new \InvalidArgumentException(sprintf("No metadata found for class %s", $className));
+	    throw new \InvalidArgumentException(sprintf("No metadata found for class %s", $className));
 	}
 
-	$context = new NavigatorContext(GraphNavigator::DIRECTION_SERIALIZATION, 'json'); //TODO: the exclusionStrategy has a hard dependency on this, despite it isn't even used :(
 	$exclusionStrategies = array();
 	$exclusionStrategies[] = new GroupsExclusionStrategy($groups);
 	if (null !== $version) { // Add VersionExclusionStrategy only if version is not null because otherwise it is interpreted as version 0.
@@ -117,7 +117,7 @@ class JmsMetadataParser implements ParserInterface
 
 		// apply exclusion strategies
 		foreach ($exclusionStrategies as $strategy) {
-		    if (true === $strategy->shouldSkipProperty($item, $context)) {
+		    if (true === $strategy->shouldSkipProperty($item, SerializationContext::create())) {
 			continue 2;
 		    }
 		}
