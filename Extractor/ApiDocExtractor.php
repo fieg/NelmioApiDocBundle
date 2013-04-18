@@ -266,11 +266,11 @@ class ApiDocExtractor
         if (null !== $input = $annotation->getInput()) {
             $parameters = array();
 
-	    $normalizedInput = $this->normalizeInputOutputParameter($input);
+            $normalizedInput = $this->normalizeInputOutputParameter($input);
 
             foreach ($this->parsers as $parser) {
-		if ($parser->supports($normalizedInput)) {
-		    $parameters = $parser->parse($normalizedInput);
+                if ($parser->supports($normalizedInput)) {
+                    $parameters = $parser->parse($normalizedInput);
                     break;
                 }
             }
@@ -289,11 +289,11 @@ class ApiDocExtractor
         if (null !== $output = $annotation->getOutput()) {
             $response = array();
 
-	    $normalizedOutput = $this->normalizeInputOutputParameter($output);
+            $normalizedOutput = $this->normalizeInputOutputParameter($output);
 
             foreach ($this->parsers as $parser) {
-		if ($parser->supports($normalizedOutput)) {
-		    $response = $parser->parse($normalizedOutput);
+                if ($parser->supports($normalizedOutput)) {
+                    $response = $parser->parse($normalizedOutput);
                     break;
                 }
             }
@@ -356,23 +356,23 @@ class ApiDocExtractor
 
     protected function normalizeInputOutputParameter($input)
     {
-	$defaults = array(
-	    'class' => '',
-	    'groups' => array(),
-	    'version' => null,
-	);
+        $defaults = array(
+            'class'   => '',
+            'groups'  => array(),
+            'version' => null,
+        );
 
-	// normalize strings
-	if (is_string($input)) {
-	    $input = array('class' => $input);
-	}
+        // normalize strings
+        if (is_string($input)) {
+            $input = array('class' => $input);
+        }
 
-	// normalize groups
-	if (isset($input['groups']) && is_string($input['groups'])) {
-	    $input['groups'] = array_map('trim', explode(',', $input['groups']));
-	}
+        // normalize groups
+        if (isset($input['groups']) && is_string($input['groups'])) {
+            $input['groups'] = array_map('trim', explode(',', $input['groups']));
+        }
 
-	return $input + $defaults;
+        return $input + $defaults;
     }
 
     /**

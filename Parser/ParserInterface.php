@@ -38,5 +38,4 @@ interface ParserInterface
      * @return array
      */
     public function parse(array $item);
-
 }

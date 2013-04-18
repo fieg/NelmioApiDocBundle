@@ -49,10 +49,10 @@ class FormTypeParser implements ParserInterface
      */
     public function supports(array $item)
     {
-	$className = $item['class'];
+        $className = $item['class'];
 
         try {
-	    if ($this->createForm($className)) {
+            if ($this->createForm($className)) {
                 return true;
             }
         } catch (FormException $e) {
@@ -69,7 +69,7 @@ class FormTypeParser implements ParserInterface
      */
     public function parse(array $item)
     {
-	$type = $item['class'];
+        $type = $item['class'];
 
         if ($this->implementsType($type)) {
             $type = $this->getTypeInstance($type);
