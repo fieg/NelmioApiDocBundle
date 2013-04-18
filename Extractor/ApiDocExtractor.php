@@ -372,12 +372,7 @@ class ApiDocExtractor
 	    $input['groups'] = array_map('trim', explode(',', $input['groups']));
 	}
 
-	// normalize version
-	if (!array_key_exists('version', $input)) {
-	    $input['version'] = null;
-	}
-
-	return $input += $defaults;
+	return $input + $defaults;
     }
 
     /**
