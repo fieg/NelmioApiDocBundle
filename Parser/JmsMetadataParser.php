@@ -12,7 +12,6 @@
 namespace Nelmio\ApiDocBundle\Parser;
 
 use JMS\Serializer\Exclusion\GroupsExclusionStrategy;
-use JMS\Serializer\Exclusion\VersionExclusionStrategy;
 use JMS\Serializer\GraphNavigator;
 use JMS\Serializer\NavigatorContext;
 use JMS\Serializer\SerializationContext;
@@ -79,9 +78,8 @@ class JmsMetadataParser implements ParserInterface
     {
         $className = $input['class'];
         $groups    = $input['groups'];
-        $version   = $input['version'];
 
-        return $this->doParse($className, array(), $groups, $version);
+        return $this->doParse($className, array(), $groups);
     }
 
     /**
@@ -89,10 +87,11 @@ class JmsMetadataParser implements ParserInterface
      *
      * @param  string                    $className Class to get all metadata for
      * @param  array                     $visited   Classes we've already visited to prevent infinite recursion.
+     * @param  array                     $groups    Serialization groups to include.
      * @return array                     metadata for given class
      * @throws \InvalidArgumentException
      */
-    protected function doParse($className, $visited = array(), array $groups = array(), $version = null)
+    protected function doParse($className, $visited = array(), array $groups = array())
     {
         $meta = $this->factory->getMetadataForClass($className);
 
@@ -102,9 +101,6 @@ class JmsMetadataParser implements ParserInterface
 
         $exclusionStrategies   = array();
         $exclusionStrategies[] = new GroupsExclusionStrategy($groups);
-        if (null !== $version) { // Add VersionExclusionStrategy only if version is not null because otherwise it is interpreted as version 0.
-            $exclusionStrategies[] = new VersionExclusionStrategy($version);
-        }
 
         $params = array();
 
@@ -123,11 +119,13 @@ class JmsMetadataParser implements ParserInterface
                 }
 
                 $params[$name] = array(
-                    'dataType'    => $dataType['normalized'],
-                    'required'    => false,
+                    'dataType'     => $dataType['normalized'],
+                    'required'     => false,
                     //TODO: can't think of a good way to specify this one, JMS doesn't have a setting for this
-                    'description' => $this->getDescription($className, $item),
-                    'readonly'    => $item->readOnly
+                    'description'  => $this->getDescription($className, $item),
+                    'readonly'     => $item->readOnly,
+                    'sinceVersion' => $item->sinceVersion,
+                    'untilVersion' => $item->untilVersion,
                 );
 
                 // if class already parsed, continue, to avoid infinite recursion
@@ -138,7 +136,7 @@ class JmsMetadataParser implements ParserInterface
                 // check for nested classes with JMS metadata
                 if ($dataType['class'] && null !== $this->factory->getMetadataForClass($dataType['class'])) {
                     $visited[]                 = $dataType['class'];
-                    $params[$name]['children'] = $this->doParse($dataType['class'], $visited, $groups, $version);
+                    $params[$name]['children'] = $this->doParse($dataType['class'], $visited, $groups);
                 }
             }
         }

@@ -113,7 +113,13 @@ abstract class AbstractFormatter implements FormatterInterface
         }
 
         if (isset($annotation['response'])) {
-            $annotation['response'] = $this->compressNestedParameters($annotation['response']);
+            $response = $this->compressNestedParameters($annotation['response']);
+            foreach ($response as $name => &$info) {
+                $info['sinceVersion'] = array_key_exists('sinceVersion', $annotation['response'][$name]) ? $annotation['response'][$name]['sinceVersion'] : null;
+                $info['untilVersion'] = array_key_exists('untilVersion', $annotation['response'][$name]) ? $annotation['response'][$name]['untilVersion'] : null;
+
+            }
+            $annotation['response'] = $response;
         }
 
         return $annotation;
