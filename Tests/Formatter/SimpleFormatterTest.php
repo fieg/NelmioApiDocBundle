@@ -252,6 +252,8 @@ class SimpleFormatterTest extends WebTestCase
                             'required' => false,
                             'description' => 'No description.',
                             'readonly' => false,
+                            'sinceVersion' => null,
+                            'untilVersion' => null,
                         ),
                         'bar' =>
                         array(
@@ -259,6 +261,8 @@ class SimpleFormatterTest extends WebTestCase
                             'required' => false,
                             'description' => 'No description.',
                             'readonly' => true,
+                            'sinceVersion' => null,
+                            'untilVersion' => null,
                         ),
                         'number' =>
                         array(
@@ -266,6 +270,8 @@ class SimpleFormatterTest extends WebTestCase
                             'required' => false,
                             'description' => 'No description.',
                             'readonly' => false,
+                            'sinceVersion' => null,
+                            'untilVersion' => null,
                         ),
                         'arr' =>
                         array(
@@ -273,6 +279,8 @@ class SimpleFormatterTest extends WebTestCase
                             'required' => false,
                             'description' => 'No description.',
                             'readonly' => false,
+                            'sinceVersion' => null,
+                            'untilVersion' => null,
                         ),
                         'nested' =>
                         array(
@@ -280,6 +288,8 @@ class SimpleFormatterTest extends WebTestCase
                             'required' => false,
                             'description' => 'No description.',
                             'readonly' => false,
+                            'sinceVersion' => null,
+                            'untilVersion' => null,
                             'children' =>
                             array(
                                 'foo' =>
@@ -288,6 +298,8 @@ class SimpleFormatterTest extends WebTestCase
                                     'required' => false,
                                     'description' => 'No description.',
                                     'readonly' => true,
+                                    'sinceVersion' => null,
+                                    'untilVersion' => null,
                                 ),
                                 'bar' =>
                                 array(
@@ -295,6 +307,8 @@ class SimpleFormatterTest extends WebTestCase
                                     'required' => false,
                                     'description' => 'No description.',
                                     'readonly' => false,
+                                    'sinceVersion' => null,
+                                    'untilVersion' => null,
                                 ),
                                 'baz' =>
                                 array(
@@ -304,6 +318,8 @@ class SimpleFormatterTest extends WebTestCase
 
 With multiple lines.',
                                     'readonly' => false,
+                                    'sinceVersion' => null,
+                                    'untilVersion' => null,
                                 ),
                                 'circular' =>
                                 array(
@@ -311,6 +327,8 @@ With multiple lines.',
                                     'required' => false,
                                     'description' => 'No description.',
                                     'readonly' => false,
+                                    'sinceVersion' => null,
+                                    'untilVersion' => null,
                                 ),
                                 'parent' =>
                                 array(
@@ -318,6 +336,8 @@ With multiple lines.',
                                     'required' => false,
                                     'description' => 'No description.',
                                     'readonly' => false,
+                                    'sinceVersion' => null,
+                                    'untilVersion' => null,
                                     'children' =>
                                     array(
                                         'foo' =>
@@ -326,6 +346,8 @@ With multiple lines.',
                                             'required' => false,
                                             'description' => 'No description.',
                                             'readonly' => false,
+                                            'sinceVersion' => null,
+                                            'untilVersion' => null,
                                         ),
                                         'bar' =>
                                         array(
@@ -333,6 +355,8 @@ With multiple lines.',
                                             'required' => false,
                                             'description' => 'No description.',
                                             'readonly' => true,
+                                            'sinceVersion' => null,
+                                            'untilVersion' => null,
                                         ),
                                         'number' =>
                                         array(
@@ -340,6 +364,8 @@ With multiple lines.',
                                             'required' => false,
                                             'description' => 'No description.',
                                             'readonly' => false,
+                                            'sinceVersion' => null,
+                                            'untilVersion' => null,
                                         ),
                                         'arr' =>
                                         array(
@@ -347,6 +373,8 @@ With multiple lines.',
                                             'required' => false,
                                             'description' => 'No description.',
                                             'readonly' => false,
+                                            'sinceVersion' => null,
+                                            'untilVersion' => null,
                                         ),
                                         'nested' =>
                                         array(
@@ -354,6 +382,8 @@ With multiple lines.',
                                             'required' => false,
                                             'description' => 'No description.',
                                             'readonly' => false,
+                                            'sinceVersion' => null,
+                                            'untilVersion' => null,
                                         ),
                                         'nested_array' =>
                                         array(
@@ -361,6 +391,8 @@ With multiple lines.',
                                             'required' => false,
                                             'description' => 'No description.',
                                             'readonly' => false,
+                                            'sinceVersion' => null,
+                                            'untilVersion' => null,
                                         ),
                                     ),
                                 ),
@@ -372,6 +404,8 @@ With multiple lines.',
                             'required' => false,
                             'description' => 'No description.',
                             'readonly' => false,
+                            'sinceVersion' => null,
+                            'untilVersion' => null,
                         ),
                     ),
                     'https' => false,

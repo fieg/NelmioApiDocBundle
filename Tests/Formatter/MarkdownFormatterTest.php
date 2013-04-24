@@ -295,6 +295,7 @@ dependency_type[a]:
 
   * type: string
   * description: A nice description
+  * versions: all
 
 
 ### `ANY` /my-commented/{id}/{page}/{paramType}/{param} ###
