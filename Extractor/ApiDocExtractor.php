@@ -266,7 +266,7 @@ class ApiDocExtractor
         if (null !== $input = $annotation->getInput()) {
             $parameters = array();
 
-            $normalizedInput = $this->normalizeInputOutputParameter($input);
+            $normalizedInput = $this->normalizeClassParameter($input);
 
             foreach ($this->parsers as $parser) {
                 if ($parser->supports($normalizedInput)) {
@@ -289,7 +289,7 @@ class ApiDocExtractor
         if (null !== $output = $annotation->getOutput()) {
             $response = array();
 
-            $normalizedOutput = $this->normalizeInputOutputParameter($output);
+            $normalizedOutput = $this->normalizeClassParameter($output);
 
             foreach ($this->parsers as $parser) {
                 if ($parser->supports($normalizedOutput)) {
@@ -354,7 +354,7 @@ class ApiDocExtractor
         return $annotation;
     }
 
-    protected function normalizeInputOutputParameter($input)
+    protected function normalizeClassParameter($input)
     {
         $defaults = array(
             'class'   => '',
@@ -371,7 +371,7 @@ class ApiDocExtractor
             $input['groups'] = array_map('trim', explode(',', $input['groups']));
         }
 
-        return $input + $defaults;
+        return array_merge($defaults, $input);
     }
 
     /**
