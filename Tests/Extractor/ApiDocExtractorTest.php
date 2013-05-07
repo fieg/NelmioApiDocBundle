@@ -66,7 +66,7 @@ class ApiDocExtractorTest extends WebTestCase
         $this->assertFalse(isset($array2['filters']));
         $this->assertEquals('Nelmio\ApiDocBundle\Tests\Fixtures\Form\TestType', $a2->getInput());
 
-        $a3 = $data['12']['annotation'];
+        $a3 = $data['13']['annotation'];
         $this->assertTrue($a3->getHttps());
     }
 

@@ -111,3 +111,7 @@ test_route_16:
     defaults: { _controller: NelmioApiDocTestBundle:Test:zActionWithQueryParamNoDefault }
     requirements:
         _method: GET
+
+test_return_nested_output:
+    pattern: /return-nested-output
+    defaults: { _controller: NelmioApiDocTestBundle:Test:jmsReturnNestedOutput, _format: json }
