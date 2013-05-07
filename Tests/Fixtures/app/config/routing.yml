@@ -99,3 +99,7 @@ test_route_14:
     defaults: { _controller: NelmioApiDocTestBundle:Test:postTest2, _format: json }
     requirements:
         _method: POST
+
+test_return_nested_output:
+    pattern: /return-nested-output
+    defaults: { _controller: NelmioApiDocTestBundle:Test:jmsReturnNestedOutput, _format: json }

@@ -276,6 +276,24 @@ nested[parent][nested_array][]:
   * required: false
   * description: No description.
 
+nested[since]:
+
+  * type: string
+  * required: false
+  * description: No description.
+
+nested[until]:
+
+  * type: string
+  * required: false
+  * description: No description.
+
+nested[since_and_until]:
+
+  * type: string
+  * required: false
+  * description: No description.
+
 nested_array[]:
 
   * type: array of objects (JmsNested)
@@ -313,6 +331,136 @@ _This method is useful to test if the getDocComment works._
 **page**
 
   - Type: int
+
+
+### `ANY` /return-nested-output ###
+### This method is deprecated ###
+
+
+
+#### Response ####
+
+foo:
+
+  * type: string
+  * description: No description.
+  * versions: all
+
+bar:
+
+  * type: DateTime
+  * description: No description.
+  * versions: all
+
+number:
+
+  * type: double
+  * description: No description.
+  * versions: all
+
+arr:
+
+  * type: array
+  * description: No description.
+  * versions: all
+
+nested:
+
+  * type: object (JmsNested)
+  * description: No description.
+  * versions: all
+
+nested[foo]:
+
+  * type: DateTime
+  * description: No description.
+  * versions: all
+
+nested[bar]:
+
+  * type: string
+  * description: No description.
+  * versions: all
+
+nested[baz][]:
+
+  * type: array of integers
+  * description: Epic description.
+
+With multiple lines.
+  * versions: all
+
+nested[circular]:
+
+  * type: object (JmsNested)
+  * description: No description.
+  * versions: all
+
+nested[parent]:
+
+  * type: object (JmsTest)
+  * description: No description.
+  * versions: all
+
+nested[parent][foo]:
+
+  * type: string
+  * description: No description.
+  * versions: all
+
+nested[parent][bar]:
+
+  * type: DateTime
+  * description: No description.
+  * versions: all
+
+nested[parent][number]:
+
+  * type: double
+  * description: No description.
+  * versions: all
+
+nested[parent][arr]:
+
+  * type: array
+  * description: No description.
+  * versions: all
+
+nested[parent][nested]:
+
+  * type: object (JmsNested)
+  * description: No description.
+  * versions: all
+
+nested[parent][nested_array][]:
+
+  * type: array of objects (JmsNested)
+  * description: No description.
+  * versions: all
+
+nested[since]:
+
+  * type: string
+  * description: No description.
+  * versions: >=0.2
+
+nested[until]:
+
+  * type: string
+  * description: No description.
+  * versions: <=0.3
+
+nested[since_and_until]:
+
+  * type: string
+  * description: No description.
+  * versions: >=0.4,<=0.5
+
+nested_array[]:
+
+  * type: array of objects (JmsNested)
+  * description: No description.
+  * versions: all
 
 
 ### `ANY` /secure-route ###
