@@ -73,6 +73,8 @@ abstract class AbstractFormatter implements FormatterInterface
                 'dataType'      => $info['dataType'],
                 'readonly'      => $info['readonly'],
                 'required'      => $info['required'],
+                'sinceVersion'  => array_key_exists('sinceVersion', $info) ? $info['sinceVersion'] : null,
+                'untilVersion'  => array_key_exists('untilVersion', $info) ? $info['untilVersion'] : null,
             );
 
             if (isset($info['children']) && (!$info['readonly'] || !$ignoreNestedReadOnly)) {
@@ -113,13 +115,7 @@ abstract class AbstractFormatter implements FormatterInterface
         }
 
         if (isset($annotation['response'])) {
-            $response = $this->compressNestedParameters($annotation['response']);
-            foreach ($response as $name => &$info) {
-                $info['sinceVersion'] = array_key_exists('sinceVersion', $annotation['response'][$name]) ? $annotation['response'][$name]['sinceVersion'] : null;
-                $info['untilVersion'] = array_key_exists('untilVersion', $annotation['response'][$name]) ? $annotation['response'][$name]['untilVersion'] : null;
-
-            }
-            $annotation['response'] = $response;
+            $annotation['response'] = $this->compressNestedParameters($annotation['response']);
         }
 
         return $annotation;
