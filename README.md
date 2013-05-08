@@ -119,15 +119,6 @@ The following properties are available:
 
  In this case the groups 'update' and 'public' are used.
 
- Also supported are versions:
-
- ```
-  input={
-      "class"="Acme\Bundle\Entity\User",
-      "version"="2.3"
-  }
-  ```
-
 * `output`: the output type associated with the response.  Specified and parsed the same way as `input`.
 
 * `statusCodes`: an array of HTTP status codes and a description of when that status is returned; Example:
