@@ -15,7 +15,7 @@ use Nelmio\ApiDocBundle\Tests\WebTestCase;
 
 class ApiDocExtractorTest extends WebTestCase
 {
-    const ROUTES_QUANTITY = 18;
+    const ROUTES_QUANTITY = 19;
 
     public function testAll()
     {
@@ -155,7 +155,7 @@ class ApiDocExtractorTest extends WebTestCase
             "This method is useful to test if the getDocComment works.",
             $annotation->getDescription()
         );
-		
+
         $data = $annotation->toArray();
         $this->assertEquals(
             4,

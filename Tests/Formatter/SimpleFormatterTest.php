@@ -748,7 +748,7 @@ With multiple lines.',
                     'authentication' => false,
                     'deprecated' => false,
                 ),
-                10 =>
+                11 =>
                 array(
                     'method' => 'GET',
                     'uri' => '/z-action-with-query-param-no-default',
@@ -764,7 +764,7 @@ With multiple lines.',
                     'authentication' => false,
                     'deprecated' => false,
                 ),
-                11 =>
+                12 =>
                 array(
                     'method' => 'GET',
                     'uri' => '/z-action-with-query-param-strict',
@@ -781,7 +781,7 @@ With multiple lines.',
                     'authentication' => false,
                     'deprecated' => false,
                 ),
-                12 =>
+                13 =>
                 array(
                     'method' => 'POST',
                     'uri' => '/z-action-with-request-param',
